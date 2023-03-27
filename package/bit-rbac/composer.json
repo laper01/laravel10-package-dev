@@ -11,5 +11,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {},
-    "require-dev": {}
+    "require-dev": {
+        "laravel/breeze": "^1.20"
+    }
 }
