@@ -1,0 +1,15 @@
+{
+    "name": "danova/bit-rbac",
+    "description": "role base action controller based on bit technology",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Danova\\BitRbac\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {},
+    "require-dev": {}
+}
