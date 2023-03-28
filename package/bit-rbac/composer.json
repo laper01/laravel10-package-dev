@@ -12,6 +12,5 @@
     "prefer-stable": true,
     "require": {},
     "require-dev": {
-        "laravel/breeze": "^1.20"
     }
 }
