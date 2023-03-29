@@ -44,9 +44,11 @@ trait InstallsApiStack
         copy(__DIR__.'/../../stubs/api/routes/auth.php', base_path('routes/auth.php'));
 
         // middleware
-        copy(__DIR__.'/../../stubs/api/Middleware/RbacApi.php', base_path('app/Http/Middleware/RbacApi.php'));
+        copy(__DIR__.'/../../stubs/api/app/Http/Middleware/RbacApi.php', base_path('app/Http/Middleware/RbacApi.php'));
+        copy(__DIR__.'/../../stubs/api/app/Http/Middleware/RbacWeb.php', base_path('app/Http/Middleware/RbacWeb.php'));
         // install middleware
         copy(__DIR__.'/../../stubs/api/app/Http/Kernel.php', base_path('app/Http/Kernel.php'));
+
 
         // Configuration...
         $files->copyDirectory(__DIR__.'/../../stubs/api/config', config_path());

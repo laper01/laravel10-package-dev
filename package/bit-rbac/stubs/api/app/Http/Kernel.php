@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'rbacapi' => \App\Http\Middleware\RbacApi::class,
+        'rbac' => \App\Http\Middleware\RbacWeb::class,
     ];
 }
