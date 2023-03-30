@@ -6,6 +6,8 @@ use Danova\BitRbac\Http\Controllers\TestController;
 //     Route::get('test', )
 // });
 
-Route::controller(TestController::class)->group(function(){
-    Route::get('test', 'index');
+Route::prefix('test')->group(function () {
+    Route::controller(TestController::class)->group(function () {
+        Route::get('/', 'index');
+    });
 });
