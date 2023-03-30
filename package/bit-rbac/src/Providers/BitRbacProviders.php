@@ -1,6 +1,7 @@
 <?php
 
 namespace Danova\BitRbac\Providers;
+use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +20,9 @@ class BitRbacProviders extends ServiceProvider
     {
         //
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        Route::middleware('api')->prefix('api')->group(function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        });
 
 
         if ($this->app->runningInConsole()) {

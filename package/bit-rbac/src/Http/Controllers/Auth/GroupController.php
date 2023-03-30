@@ -23,6 +23,7 @@ class GroupController extends Controller
     {
         $group = Auth::user()->group;
 
+
         if ($group->id == 1) {
             $msg['data'] = [
                 'group'=>Group::orderBy('id','ASC')->get()

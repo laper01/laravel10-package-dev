@@ -5,6 +5,7 @@ use Danova\BitRbac\Http\Controllers\Auth\ModuleController;
 use Danova\BitRbac\Http\Controllers\Auth\RoleController;
 
 
+
 Route::prefix('test')->group(function () {
     Route::controller(TestController::class)->group(function () {
         Route::get('/', 'index');
