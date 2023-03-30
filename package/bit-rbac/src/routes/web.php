@@ -9,8 +9,8 @@ Route::prefix('test')->group(function () {
     Route::controller(TestController::class)->group(function () {
         Route::get('/', 'index');
     });
-
     Route::middleware(['auth'])->group(function () {
+
         Route::prefix('/module')->group(function () {
             Route::controller(ModuleController::class)->group(function () {
                 Route::get('/', 'index');
@@ -22,15 +22,26 @@ Route::prefix('test')->group(function () {
                 Route::post('/store', 'store');
             });
         });
-    });
 
-    Route::controller(GroupController::class)->group(function () {
-
-    });
-
-
-
-    Route::controller(RoleController::class)->group(function () {
+        Route::prefix('/group')->group(function () {
+            Route::controller(GroupController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::get('/show/{group}', 'show');
+                Route::get('/roles/{group}', 'roles');
+            });
+            Route::controller(RoleController::class)->group(function () {
+                Route::post('/roles-permissions/{role}', 'update');
+                Route::post('/roles-create/{group}/{module}', 'create');
+            });
+        });
+        Route::prefix('/roles')->group(function () {
+            Route::controller(RoleController::class)->group(function () {
+                Route::get('/show/{group}', 'show');
+            });
+            Route::controller(GroupController::class)->group(function () {
+                Route::get('/', 'index');
+            });
+        });
 
     });
 });
