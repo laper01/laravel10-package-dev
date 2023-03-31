@@ -11,6 +11,8 @@ class Group extends Model
 {
     use HasFactory;
 
+    public $protected = ['name', 'module_access_code', 'is_active'];
+
     public function role(){
         return $this->hasMany(Role::class);
     }
