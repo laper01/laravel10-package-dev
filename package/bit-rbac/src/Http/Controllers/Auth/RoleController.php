@@ -141,6 +141,7 @@ class RoleController extends Controller
      */
     public function update(Request $request,Role $role)
     {
+
         $validate = $request->validate([
             'permissionCode' => 'required',
             'status'=>'required'
