@@ -4,10 +4,9 @@ namespace Danova\BitRbac\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\ConfigTemplate;
-use App\Models\Group;
-use App\Models\Module;
-use App\Models\Role;
+use App\Models\Auth\Group;
+use App\Models\Auth\Module;
+use App\Models\Auth\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,15 +22,14 @@ class GroupController extends Controller
     {
         $group = Auth::user()->group;
 
-
         if ($group->id == 1) {
             $msg['data'] = [
-                'group'=>Group::orderBy('id','ASC')->get()
+                'group' => Group::orderBy('id', 'ASC')->get()
                 // 'group'=>Group::where('id','>',$group->id)->orderBy('id','ASC')->get()
             ];
             $msg['meta'] = [
                 "status" => "success",
-                "code"=>200,
+                "code" => 200,
                 "message" => null
             ];
             return json_encode($msg);
@@ -42,11 +40,11 @@ class GroupController extends Controller
             //     'group' => Group::where('id', ">", Auth::user()->group->id)->get()
             // ]);
             $msg['data'] = [
-                'group'=>Group::where('id', ">", Auth::user()->group->id)->get()
+                'group' => Group::where('id', ">", Auth::user()->group->id)->get()
             ];
             $msg['meta'] = [
                 "status" => "success",
-                "code"=>200,
+                "code" => 200,
                 "message" => null
             ];
             return json_encode($msg);
@@ -103,7 +101,7 @@ class GroupController extends Controller
         $modulOnRole = DB::table('groups')
             ->leftJoin('roles', 'groups.id', '=', 'roles.group_id')
             ->leftJoin('modules', 'modules.id', '=', 'roles.module_id')
-            ->select('modules.*','roles.id as role_id','roles.permision','roles.group_id')
+            ->select('modules.*', 'roles.id as role_id', 'roles.permision', 'roles.group_id')
             ->where('group_id', $group->id)
             ->get();
         // with no root concept
@@ -130,7 +128,7 @@ class GroupController extends Controller
         // $msg['data']['module'] = Module::withRowNumber()->whereNotIn('id', $modulOnRole->pluck('id')->toArray())->get();
         $msg['meta'] = [
             "status" => "success",
-            "code"=>200,
+            "code" => 200,
             "message" => null
         ];
         return json_encode($msg);

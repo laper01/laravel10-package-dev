@@ -4,9 +4,9 @@ namespace Danova\BitRbac\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Group;
-use App\Models\Module;
-use App\Models\Role;
+use App\Models\Auth\Group;
+use App\Models\Auth\Module;
+use App\Models\Auth\Role;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller

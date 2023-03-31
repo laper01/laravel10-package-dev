@@ -34,6 +34,9 @@ trait InstallsApiStack
         $files->ensureDirectoryExists(app_path('Http/Requests/Auth'));
         $files->copyDirectory(__DIR__.'/../../stubs/api/app/Http/Requests/Auth', app_path('Http/Requests/Auth'));
 
+        // copy directory model
+        $files->copyDirectory(__DIR__.'/../../stubs/api/app/Models', app_path('Models/'));
+
         // Providers...
         $files->copyDirectory(__DIR__.'/../../stubs/api/app/Providers', app_path('Providers'));
         $this->replaceInFile("HOME = '/home'", "HOME = '/dashboard'", app_path('Providers/RouteServiceProvider.php'));

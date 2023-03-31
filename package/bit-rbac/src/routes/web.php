@@ -9,7 +9,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::controller(TestController::class)->group(function () {
         Route::get('/', 'index');
     });
-    // Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
 
         Route::prefix('/module')->group(function () {
             Route::controller(ModuleController::class)->group(function () {
@@ -43,5 +43,5 @@ Route::group(['middleware' => 'web'], function () {
             });
         });
 
-    // });
+    });
 });
