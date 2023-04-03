@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Auth\Module;
 
+// module permisssion seeder
 class ModuleSeeder extends Seeder
 {
     /**

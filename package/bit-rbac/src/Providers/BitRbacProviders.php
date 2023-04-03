@@ -32,9 +32,11 @@ class BitRbacProviders extends ServiceProvider
             ]);
         }
 
-        // $this->commands([
-        //     Console\InstallBitRBAC::class,
-        // ]);
+        // publish config file
+        $this->publishes([
+            __DIR__.'/../config/menusDefault.php' => config_path('menuDefault.php'),
+            __DIR__.'/../config/rbacBinAddress.php' => config_path('rbacBinAddress.php')
+        ]);
     }
 
     public function provides()

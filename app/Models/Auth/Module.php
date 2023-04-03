@@ -5,7 +5,7 @@ namespace App\Models\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Models\Auth\Role;
+use App\Model\Auth\Role;
 
 class Module extends Model
 {
