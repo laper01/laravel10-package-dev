@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\Auth\ModuleSeeder;
 use Database\Seeders\Auth\UserSeeder;
 use Database\Seeders\Auth\GroupSeeder;
+use Database\Seeders\Auth\RoleSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
             GroupSeeder::class,
             UserSeeder::class,
             ModuleSeeder::class,
+            RoleSeeder::class
         ]);
     }
 }

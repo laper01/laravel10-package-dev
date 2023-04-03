@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 use Danova\BitRbac\Console\InstallBitRBAC;
+use Danova\BitRbac\Console\InstallMenu;
 
 class BitRbacProviders extends ServiceProvider
 {
@@ -28,7 +29,8 @@ class BitRbacProviders extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->commands([
-                InstallBitRBAC::class
+                InstallBitRBAC::class,
+                InstallMenu::class
             ]);
         }
 
