@@ -24,7 +24,8 @@ class CreateMenusTable extends Migration
             $table->integer('parent_menu_id')->nullable();
             $table->boolean('is_active')->require();
             $table->integer('module_id')->nullable();
-            $table->string('url')->nullable();
+            // $table->string('url')->nullable();
+            $table->unsignedBigInteger('route_id');
             $table->boolean('open_in_new_tab')->require();
             $table->timestamps();
         });
