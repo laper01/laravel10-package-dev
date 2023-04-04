@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    $routes = Route::getRoutes();
+    // dd($routes);
+    // return response()->json($routes->);
     return ['Laravel' => app()->version()];
 });
+
+Route::get('/test-app',function(){
+    return 'ini test';
+})->middleware('rbac:view');
 
 require __DIR__.'/auth.php';

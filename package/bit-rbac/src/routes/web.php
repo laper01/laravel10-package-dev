@@ -7,7 +7,7 @@ use Danova\BitRbac\Http\Controllers\Auth\RoleController;
 Route::group(['middleware' => 'web'], function () {
 // Route::prefix('test')->group(function () {
     Route::controller(TestController::class)->group(function () {
-        Route::get('/', 'index');
+        // Route::get('/', 'index');
     });
     Route::middleware(['auth'])->group(function () {
 
