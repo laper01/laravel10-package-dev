@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
 
 class InstallMenu extends Command
@@ -55,7 +56,16 @@ class InstallMenu extends Command
         // ============================
         // $routes = Route::getRoutes();
         // dd($routes);
-        dd($this->routes);
+        dd($this->filterRoutes('name', 'admin'));
+    }
+
+
+    public function filterRoutes(string $filterKey, string $filterValue):Collection
+    {
+       $data =  $this->routes->filter(function(array $value, string $key) use($filterKey, $filterValue) {
+            return $value[$filterKey] == $filterValue ;
+        });
+        return $data;
     }
 
 
