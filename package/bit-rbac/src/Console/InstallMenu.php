@@ -41,7 +41,7 @@ class InstallMenu extends Command
     }
 
 
-    public function propOfFile($allFiles)
+    public function propOfFile($allFiles): array
     {
         $data= [];
         foreach ($allFiles as $key => $value){
@@ -51,9 +51,9 @@ class InstallMenu extends Command
         return $data;
     }
 
-    public function propOfFolder()
+    public function propOfFolder(): array
     {
-
+        return [];
     }
 
     public function listFolder(): void
@@ -61,11 +61,12 @@ class InstallMenu extends Command
 
     }
 
-    public function listFile(): void
+    public function listFile(): array
     {
-        $directory = File::allFiles(base_path('/routes'));
-        $fileNames = $this->propOfFile($directory);
-        $route = Route::getRoutes();
+        $allfile = File::allFiles(base_path('/routes'));
+        $fileNames = $this->propOfFile($allfile);
+
+        return $fileNames;
     }
 
     public function saveToDatabase(): void
