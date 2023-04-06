@@ -3,7 +3,9 @@
 namespace Danova\BitRbac\Console;
 
 use Illuminate\Console\Command;
-use Route;
+use File;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route;
 
 
 class InstallMenu extends Command
@@ -13,6 +15,10 @@ class InstallMenu extends Command
      *
      * @var string
      */
+
+    protected $file;
+    protected $foleder;
+
     protected $signature = 'bitrbac-api:install-menu';
 
     /**
@@ -29,8 +35,46 @@ class InstallMenu extends Command
     {
 
         // ============================
+        // $routes = Route::getRoutes();
+        // dd($routes);
+        $this->listFile();
+    }
 
-        $routes = Route::getRoutes();
-        dd($routes);
+
+    public function propOfFile($allFiles)
+    {
+        $data= [];
+        foreach ($allFiles as $key => $value){
+            array_push($data, $value->getFilename());
+        }
+
+        return $data;
+    }
+
+    public function propOfFolder()
+    {
+
+    }
+
+    public function listFolder(): void
+    {
+
+    }
+
+    public function listFile(): void
+    {
+        $directory = File::allFiles(base_path('/routes'));
+        $fileNames = $this->propOfFile($directory);
+        $route = Route::getRoutes();
+    }
+
+    public function saveToDatabase(): void
+    {
+        try {
+
+        } catch (\Exception $e) {
+            // return $e;
+        }
+
     }
 }

@@ -18,3 +18,6 @@ yarn-error.log
 /.idea
 /.vscode
 /package/bit-rbac/vendor
+#
+fileinfo.txt
+routeinfo.txt
