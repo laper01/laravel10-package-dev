@@ -4,9 +4,8 @@ namespace Danova\BitRbac\Console;
 
 use Illuminate\Console\Command;
 use File;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
+use Danova\BitRbac\Helpers\MenuHellper;
+
 
 
 class InstallMenu extends Command
@@ -19,7 +18,6 @@ class InstallMenu extends Command
 
     protected $file;
     protected $folder;
-    protected $routes;
 
     protected $signature = 'bitrbac-api:install-menu';
 
@@ -30,22 +28,6 @@ class InstallMenu extends Command
      */
     protected $description = 'add menu at rbac system';
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->routes = collect(Route::getRoutes())->map(function ($route) {
-            return [
-                'method' => implode('|', $route->methods()),
-                'uri' => $route->uri(),
-                'name' => $route->getName(),
-                'action' => ltrim($route->getActionName(), '\\'),
-                'middleware' => collect($route->middleware())
-                    ->filter(function (string $string) {
-                        return Str::startsWith($string, 'rbac');
-                    })->first()
-            ];
-        });
-    }
 
     /**
      * Execute the console command.
@@ -56,17 +38,14 @@ class InstallMenu extends Command
         // ============================
         // $routes = Route::getRoutes();
         // dd($routes);
-        dd($this->filterRoutes('name', 'admin'));
+        // dd($this->filterRoutes('name', 'admin'));
+        // dd($this->filterRoutes('middleware', 'rbac:view'));
+        $menu = new MenuHellper();
+        dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
     }
 
 
-    public function filterRoutes(string $filterKey, string $filterValue):Collection
-    {
-       $data =  $this->routes->filter(function(array $value, string $key) use($filterKey, $filterValue) {
-            return $value[$filterKey] == $filterValue ;
-        });
-        return $data;
-    }
+
 
 
     public function propOfFile($allFiles): array
