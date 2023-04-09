@@ -36,23 +36,21 @@ class InstallMenu extends Command
     {
 
         // ============================
-        // $routes = Route::getRoutes();
-        // dd($routes);
-        // dd($this->filterRoutes('name', 'admin'));
-        // dd($this->filterRoutes('middleware', 'rbac:view'));
-        $menu = new MenuHellper();
-        dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
+        // $menu = new MenuHellper();
+        // dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
+
+        dd($this->listFile());
     }
 
 
 
 
 
-    public function propOfFile($allFiles): array
+    public function getFileName($allFiles): array
     {
         $data = [];
         foreach ($allFiles as $key => $value) {
-            array_push($data, $value->getFilename());
+            array_push($data, str_replace('.php', '', $value->getFilename()));
         }
 
         return $data;
@@ -71,7 +69,7 @@ class InstallMenu extends Command
     public function listFile(): array
     {
         $allfile = File::allFiles(base_path('/routes'));
-        $fileNames = $this->propOfFile($allfile);
+        $fileNames = $this->getFileName($allfile);
 
         return $fileNames;
     }
