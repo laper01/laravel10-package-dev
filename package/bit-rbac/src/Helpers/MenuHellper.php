@@ -18,7 +18,7 @@ class MenuHellper
             return [
                 'method' => implode('|', $route->methods()),
                 'uri' => $route->uri(),
-                'name' => $route->getName(),
+                'name' => $this->getName($route->getName()),
                 'action' => ltrim($route->getActionName(), '\\'),
                 'middleware' => collect($route->middleware())
                     ->filter(function (string $string) {
@@ -26,6 +26,14 @@ class MenuHellper
                     })->first()
             ];
         });
+    }
+
+    public function getName($name='')
+    {
+        if (strpos($name, ':') !== false) {
+            return ;
+        }
+        return $name;
     }
 
     public function filterRoutes(string $filterKey, string $filterValue): object
