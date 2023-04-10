@@ -21,6 +21,7 @@ class InstallMenu extends Command
 
     protected $signature = 'bitrbac-api:install-menu';
 
+    protected $basepath;
     /**
      * The console command description.
      *
@@ -28,18 +29,23 @@ class InstallMenu extends Command
      */
     protected $description = 'add menu at rbac system';
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->basepath = base_path('/routes');
+    }
+
 
     /**
      * Execute the console command.
      */
     public function handle(): void
     {
-
         // ============================
-        // $menu = new MenuHellper();
+        $menu = new MenuHellper();
         // dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
-
-        dd($this->listFile());
+        // dd($this->listFolder());
+        dd($menu->filterRoutes('name', '/Test/Test pembayaran-test modul')->getRoutes());
     }
 
 
@@ -48,30 +54,35 @@ class InstallMenu extends Command
 
     public function getFileName($allFiles): array
     {
-        $data = [];
+        $filesName = [];
         foreach ($allFiles as $key => $value) {
-            array_push($data, str_replace('.php', '', $value->getFilename()));
+            array_push($filesName, str_replace('.php', '', $value->getFilename()));
         }
-
-        return $data;
+        return $filesName;
     }
 
-    public function propOfFolder(): array
+    public function getFoldersPath($allFolder): array
     {
-        return [];
+        $foldersPath =[];
+        foreach($allFolder as $key => $value){
+            $name = str_replace($this->basepath, '', $value);
+            array_push($foldersPath, $name);
+        }
+        return $foldersPath;
     }
 
-    public function listFolder(): void
+    public function listFolder(): array
     {
-
+        $allFolder = File::directories($this->basepath) ;
+        $foldersPath = $this->getFoldersPath($allFolder);
+        return $foldersPath;
     }
 
     public function listFile(): array
     {
-        $allfile = File::allFiles(base_path('/routes'));
-        $fileNames = $this->getFileName($allfile);
-
-        return $fileNames;
+        $allfile = File::allFiles($this->basepath);
+        $filesName = $this->getFileName($allfile);
+        return $filesName;
     }
 
     public function saveToDatabase(): void
