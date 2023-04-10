@@ -18,7 +18,7 @@ class MenuHellper
             return [
                 'method' => implode('|', $route->methods()),
                 'uri' => $route->uri(),
-                'name' => $this->getName($route->getName()),
+                'name' => $this->getName($route->getName() ?? ''),
                 'action' => ltrim($route->getActionName(), '\\'),
                 'middleware' => collect($route->middleware())
                     ->filter(function (string $string) {
@@ -28,10 +28,10 @@ class MenuHellper
         });
     }
 
-    public function getName($name='')
+    public function getName(string $name=''): string
     {
         if (strpos($name, ':') !== false) {
-            return ;
+            return explode(':', $name)[0];
         }
         return $name;
     }
