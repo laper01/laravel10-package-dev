@@ -19,6 +19,7 @@ class MenuHellper
                 'method' => implode('|', $route->methods()),
                 'uri' => $route->uri(),
                 'name' => $this->getName($route->getName() ?? ''),
+                'type' => $this->getType($route->getName()?? ''), // view add update delete
                 'action' => ltrim($route->getActionName(), '\\'),
                 'middleware' => collect($route->middleware())
                     ->filter(function (string $string) {
@@ -28,12 +29,23 @@ class MenuHellper
         });
     }
 
-    public function getName(string $name=''): string
+    public function getName(string $name = ''): string
     {
         if (strpos($name, ':') !== false) {
             return explode(':', $name)[0];
         }
         return $name;
+    }
+
+    public function getType(string $type): string
+    {
+        if (strpos($type, ':') !== false) {
+            return explode(':', $type)[1];
+        }else{
+            $type ='';
+        }
+
+        return $type;
     }
 
     public function filterRoutes(string $filterKey, string $filterValue): object
