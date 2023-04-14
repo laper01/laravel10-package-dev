@@ -19,7 +19,9 @@ class MenuHellper
                 'method' => implode('|', $route->methods()),
                 'uri' => $route->uri(),
                 'name' => $this->getName($route->getName() ?? ''),
-                'type' => $this->getType($route->getName()?? ''), // view add update delete
+                'type' => $this->getType($route->getName() ?? ''),
+                // view add update delete
+                'menuName' => $this->getMenuName($route->getName() ?? ''),
                 'action' => ltrim($route->getActionName(), '\\'),
                 'middleware' => collect($route->middleware())
                     ->filter(function (string $string) {
@@ -41,11 +43,21 @@ class MenuHellper
     {
         if (strpos($type, ':') !== false) {
             return explode(':', $type)[1];
-        }else{
-            $type ='';
+        } else {
+            $type = '';
         }
 
         return $type;
+    }
+
+    public function getMenuName(string $menuName): string
+    {
+        if (strpos($menuName, 'view-menu')) {
+            return explode(':', $menuName)[2];
+        } else {
+            $menuName = '';
+        }
+        return $menuName;
     }
 
     public function filterRoutes(string $filterKey, string $filterValue): object

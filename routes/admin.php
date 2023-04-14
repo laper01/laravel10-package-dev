@@ -33,10 +33,12 @@ Route::name('admin')->group(function () {
     Route::get('/test-app', function () {
         return 'ini test';
     })->middleware('rbac:view')
-    ->name(':view')
+    ->name(':view-menu:test menu name navbar')
     ;
 
     Route::post('/test-app', function () {
         return 'ini test';
-    })->middleware('rbac:add');
+    })->middleware('rbac:add')
+    ->name(':view')
+    ;
 });
