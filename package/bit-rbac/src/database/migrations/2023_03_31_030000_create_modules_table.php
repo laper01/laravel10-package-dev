@@ -16,8 +16,6 @@ class CreateModulesTable extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->unique();
-            $table->string('display_name', 50);
-            $table->string('icon_class', 50)->nullable();
             $table->unsignedInteger('allow_permision');
             $table->string('author', 60);
             $table->string('edited', 60);
