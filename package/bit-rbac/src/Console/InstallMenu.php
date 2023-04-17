@@ -48,6 +48,7 @@ class InstallMenu extends Command
         // dd($this->listFolder());
         // dd($menu->filterRoutes('name', '/Test/Test pembayaran-test modul')->getRoutes());
         // dd($menu->filterRoutes('name', 'admin')->getRoutes());
+        dd($menu->listsFolder());
 
     }
 

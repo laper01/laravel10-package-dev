@@ -6,16 +6,26 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use File;
+use App\Models\Auth\Routes;
+use App\Models\Auth\Module;
+use App\Models\Auth\Menu;
+use Illuminate\Database\QueryException;
 
 class MenuHellper
 {
     protected $routes;
     protected $filteredRoutes;
-    protected $folderStack = [];
-    protected $filesName = [];
-
     protected string $path;
+    protected string $basepath;
+    protected int $deep = 0;
 
+    protected string $moduleName;
+    protected array $filesName;
+    protected array $menusSave;
+    protected array $routeSave;
+    protected array $foldersName;
+
+    protected object $module;
 
     public function __construct()
     {
@@ -34,6 +44,9 @@ class MenuHellper
                     })->first()
             ];
         });
+
+        $this->basepath = base_path('/routes');
+
     }
 
     public function getFileName(array $allFiles): array
@@ -45,28 +58,32 @@ class MenuHellper
         return $filesName;
     }
 
-    public function getFoldersPath(array $array):array
+    public function getFoldersPath(array $array): array
     {
-        $foldersPath =[];
-        foreach($array as $key => $value){
-            $name = str_replace($this->path, '', $value);
+        $foldersPath = [];
+        foreach ($array as $key => $value) {
+            $name = str_replace($this->basepath, '', $value);
             array_push($foldersPath, $name);
         }
         return $foldersPath;
     }
 
-    public function listsFolder(): array
+    public function listsFolder(): object
     {
-        $foldersPath = [];
-        return $foldersPath;
+        // $foldersPath = [];
+        $allFolder = File::directories($this->basepath);
+        $this->foldersName = $this->getFoldersPath($allFolder);
+        // return $foldersPath;
+        return $this;
     }
 
-    public function listFile(): array
+    public function listFile(): object
     {
-        $filesName = [];
-        $allfile = File::allFiles($this->path);
-        $filesName = $this->getFileName($allfile);
-        return $filesName;
+        // $filesName = [];
+        $allfile = File::allFiles($this->basepath);
+        $this->filesName = $this->getFileName($allfile);
+        // return $filesName;
+        return $this;
     }
 
     public function getName(string $name = ''): string
@@ -110,6 +127,41 @@ class MenuHellper
     public function getRoutes(): Collection
     {
         return $this->filteredRoutes;
+    }
+
+    public function saveModule(string $module)
+    {
+        try {
+            $findModule = Module::where('name', $module)->first();
+            $this->module = $findModule;
+        } catch (QueryException $error) {
+            dd($error);
+        }
+
+    }
+
+    public function saveRoute(array $route)
+    {
+        try {
+            Route::upsert([$route,['url'],['url']]);
+        } catch (QueryException $error) {
+            dd($error);
+        }
+    }
+
+    public function saveMenu(array $menu)
+    {
+        try {
+            Menu::upsert($menu, ['name'], ['name']);
+        } catch (QueryException $error) {
+            dd($error);
+        }
+
+    }
+
+    public function repeat()
+    {
+
     }
 
 }
