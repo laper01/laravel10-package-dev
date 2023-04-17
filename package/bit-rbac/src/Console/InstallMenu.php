@@ -47,7 +47,7 @@ class InstallMenu extends Command
         // dd($menu->filterRoutes('middleware', 'rbac:view')->getRoutes());
         // dd($this->listFolder());
         // dd($menu->filterRoutes('name', '/Test/Test pembayaran-test modul')->getRoutes());
-        dd($menu->filterRoutes('name', 'admin')->getRoutes());
+        // dd($menu->filterRoutes('name', 'admin')->getRoutes());
 
     }
 
@@ -55,7 +55,7 @@ class InstallMenu extends Command
 
 
 
-    public function getFileName($allFiles): array
+    public function getFileName(array $allFiles): array
     {
         $filesName = [];
         foreach ($allFiles as $key => $value) {
@@ -64,7 +64,7 @@ class InstallMenu extends Command
         return $filesName;
     }
 
-    public function getFoldersPath($allFolder): array
+    public function getFoldersPath(array $allFolder): array
     {
         $foldersPath =[];
         foreach($allFolder as $key => $value){

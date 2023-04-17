@@ -5,11 +5,16 @@ namespace Danova\BitRbac\Helpers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use File;
 
 class MenuHellper
 {
     protected $routes;
     protected $filteredRoutes;
+    protected $folderStack = [];
+    protected $filesName = [];
+
+    protected string $path;
 
 
     public function __construct()
@@ -29,6 +34,35 @@ class MenuHellper
                     })->first()
             ];
         });
+    }
+
+    public function getFileName(array $allfile): array
+    {
+        return $allfile;
+    }
+
+    public function getFoldersPath(array $array):array
+    {
+        $foldersPath =[];
+        foreach($array as $key => $value){
+            $name = str_replace($this->path, '', $value);
+            array_push($foldersPath, $name);
+        }
+        return $foldersPath;
+    }
+
+    public function listsFolder(): array
+    {
+        $foldersPath = [];
+        return $foldersPath;
+    }
+
+    public function listFile(): array
+    {
+        $filesName = [];
+        $allfile = File::allFiles($this->path);
+        $filesName = $this->getFileName($allfile);
+        return $filesName;
     }
 
     public function getName(string $name = ''): string
