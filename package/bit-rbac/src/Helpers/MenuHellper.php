@@ -36,9 +36,13 @@ class MenuHellper
         });
     }
 
-    public function getFileName(array $allfile): array
+    public function getFileName(array $allFiles): array
     {
-        return $allfile;
+        $filesName = [];
+        foreach ($allFiles as $key => $value) {
+            array_push($filesName, str_replace('.php', '', $value->getFilename()));
+        }
+        return $filesName;
     }
 
     public function getFoldersPath(array $array):array

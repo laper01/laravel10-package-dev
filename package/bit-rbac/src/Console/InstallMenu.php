@@ -51,10 +51,6 @@ class InstallMenu extends Command
 
     }
 
-
-
-
-
     public function getFileName(array $allFiles): array
     {
         $filesName = [];
