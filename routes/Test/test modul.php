@@ -1,7 +1,7 @@
 <?php
 
 
-Route::name('/Test-test modul')->prefix('test-modul')->group(function () {
+Route::name('/Test/test|modul')->prefix('test-modul')->group(function () {
     Route::get('/users', function () {
         // Route assigned name "admin.users"...
     });

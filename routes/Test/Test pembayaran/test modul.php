@@ -1,6 +1,6 @@
 <?php
 
-Route::name('/Test/Test pembayaran-test modul')->prefix('testpembayaran')->group(function () {
+Route::name('/Test/Test/pembayaran|test modul')->prefix('testpembayaran')->group(function () {
     Route::get('/users', function () {
         // Route assigned name "admin.users"...
     });

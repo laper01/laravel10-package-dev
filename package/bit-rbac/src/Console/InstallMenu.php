@@ -43,11 +43,11 @@ class InstallMenu extends Command
     public function handle(): void
     {
         // ============================
-        // $menu = new MenuHellper();
+        $menu = new MenuHellper();
         // dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
         // dd($menu->filterRoutes('middleware', 'rbac:view')->getRoutes());
         // dd($this->listFolder());
-        // dd($menu->filterRoutes('name', '/Test/Test pembayaran-test modul')->getRoutes());
+        dd($menu->filterRoutes('name', '/Test/Test/pembayaran|test modul')->getRoutes());
         // dd($menu->filterRoutes('name', 'admin')->getRoutes());
         // dd($menu->listsFolder());
         $this->saveModule();
@@ -56,7 +56,6 @@ class InstallMenu extends Command
 
     public function saveModule(): void
     {
-        // dd(config('module'));
         try{
             $module = Module::upsert(config('module'), ['name'], ['name', 'allow_permission', 'author', 'edited', 'folder']);
         }catch (QueryException $error) {

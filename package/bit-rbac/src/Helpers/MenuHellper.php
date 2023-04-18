@@ -35,6 +35,8 @@ class MenuHellper
                 'uri' => $route->uri(),
                 'name' => $this->getName($route->getName() ?? ''),
                 'type' => $this->getType($route->getName() ?? ''),
+                'module' => $this->getModuleName($this->getName($route->getName() ?? '')),
+                // module name
                 // view add update delete
                 'menuName' => $this->getMenuName($route->getName() ?? ''),
                 'action' => ltrim($route->getActionName(), '\\'),
@@ -57,6 +59,8 @@ class MenuHellper
         }
         return $filesName;
     }
+
+
 
     public function getFoldersPath(array $array): array
     {
@@ -105,6 +109,17 @@ class MenuHellper
         return $type;
     }
 
+    public function getModuleName(string $name): string
+    {
+        if (strpos($name, '|') !== false) {
+            return explode('|', $name)[1];
+        } else {
+            $name = '';
+        }
+
+        return $name;
+    }
+
     public function getMenuName(string $menuName): string
     {
         if (strpos($menuName, 'view-menu')) {
@@ -129,7 +144,7 @@ class MenuHellper
         return $this->filteredRoutes;
     }
 
-    public function saveModule(string $module)
+    public function findRoute(string $module)
     {
         try {
             $findModule = Module::where('name', $module)->first();
@@ -143,10 +158,16 @@ class MenuHellper
     public function saveRoute(array $route)
     {
         try {
-            Route::upsert([$route,['url'],['url']]);
+            Route::upsert($route, ['url'], ['url']);
         } catch (QueryException $error) {
             dd($error);
         }
+    }
+
+    public function formatRoute(): object
+    {
+
+        return $this;
     }
 
     public function saveMenu(array $menu)
