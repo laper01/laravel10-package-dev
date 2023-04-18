@@ -13,6 +13,15 @@ class Module extends Model
     protected $guarded = [
         'id'
     ];
+
+    protected $fillable = [
+        'name',
+        'allow_permission',
+        'author',
+        'edited',
+        'folder'
+    ];
+
     public function role(){
         return $this->hasMany(Role::class);
     }

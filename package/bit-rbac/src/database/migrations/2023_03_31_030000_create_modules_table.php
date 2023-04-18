@@ -16,7 +16,7 @@ class CreateModulesTable extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->unique();
-            $table->unsignedInteger('allow_permision');
+            $table->unsignedInteger('allow_permission');
             $table->string('author', 60);
             $table->string('edited', 60);
             $table->string('folder', 60)->unique();
