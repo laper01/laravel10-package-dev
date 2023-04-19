@@ -46,19 +46,21 @@ class InstallMenu extends Command
         $menu = new MenuHellper();
         // dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
         // dd($menu->filterRoutes('middleware', 'rbac:view')->getRoutes());
+        dd($this->listFile());
         // dd($this->listFolder());
-        dd($menu->filterRoutes('name', '/Test/Test/pembayaran|test modul')->getRoutes());
+        // dd($menu->filterRoutes('name', '/Test/Test/pembayaran|test modul')->getRoutes());
         // dd($menu->filterRoutes('name', 'admin')->getRoutes());
         // dd($menu->listsFolder());
+        // $menu->repeat();
         $this->saveModule();
 
     }
 
     public function saveModule(): void
     {
-        try{
+        try {
             $module = Module::upsert(config('module'), ['name'], ['name', 'allow_permission', 'author', 'edited', 'folder']);
-        }catch (QueryException $error) {
+        } catch (QueryException $error) {
             dd($error);
         }
     }
@@ -67,7 +69,9 @@ class InstallMenu extends Command
     {
         $filesName = [];
         foreach ($allFiles as $key => $value) {
-            array_push($filesName, str_replace('.php', '', $value->getFilename()));
+            if (strpos($value, '.php')) {
+                array_push($filesName, str_replace('.php', '', $value));
+            }
         }
         return $filesName;
     }
@@ -91,8 +95,8 @@ class InstallMenu extends Command
 
     public function listFile(): array
     {
-        $allfile = File::allFiles($this->basepath);
-        $filesName = $this->getFileName($allfile);
+        $files = scandir(base_path('routes'));
+        $filesName = $this->getFileName($files);
         return $filesName;
     }
 

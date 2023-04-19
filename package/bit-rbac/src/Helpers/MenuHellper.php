@@ -25,7 +25,7 @@ class MenuHellper
     protected array $routeSave;
     protected array $foldersName;
 
-    protected object $module;
+    protected ?object $module;
 
     public function __construct()
     {
@@ -47,7 +47,7 @@ class MenuHellper
             ];
         });
 
-        $this->basepath = base_path('/routes');
+        $this->listFile(base_path('/routes'));
 
     }
 
@@ -81,12 +81,10 @@ class MenuHellper
         return $this;
     }
 
-    public function listFile(): object
+    public function listFile(string $path): object
     {
-        // $filesName = [];
-        $allfile = File::allFiles($this->basepath);
+        $allfile = File::allFiles($path);
         $this->filesName = $this->getFileName($allfile);
-        // return $filesName;
         return $this;
     }
 
@@ -144,29 +142,30 @@ class MenuHellper
         return $this->filteredRoutes;
     }
 
-    public function findRoute(string $module)
+    public function findModule(array $module)
     {
         try {
             $findModule = Module::where('name', $module)->first();
-            $this->module = $findModule;
         } catch (QueryException $error) {
             dd($error);
         }
-
+        return $this;
     }
 
-    public function saveRoute(array $route)
+    public function saveRoute(array $route): object
     {
         try {
             Route::upsert($route, ['url'], ['url']);
         } catch (QueryException $error) {
             dd($error);
         }
+
+        return $this;
     }
 
-    public function formatRoute(): object
+    public function formatRoute(string $moduleName): object
     {
-
+        dd($moduleName);
         return $this;
     }
 
@@ -182,7 +181,18 @@ class MenuHellper
 
     public function repeat()
     {
+        $modules = $this->filesName;
+        dd($modules,'sss');
 
+        foreach ($modules as $module) {
+            $findModule = Module::where('name', $module)->first();
+            if (!$findModule) {
+                continue;
+            }
+            $this->formatRoute($module);
+        }
+
+        // foreach
     }
 
 }
