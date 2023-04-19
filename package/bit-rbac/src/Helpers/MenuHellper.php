@@ -55,7 +55,9 @@ class MenuHellper
     {
         $filesName = [];
         foreach ($allFiles as $key => $value) {
-            array_push($filesName, str_replace('.php', '', $value->getFilename()));
+            if (strpos($value, '.php')) {
+                array_push($filesName, str_replace('.php', '', $value));
+            }
         }
         return $filesName;
     }
@@ -83,8 +85,8 @@ class MenuHellper
 
     public function listFile(string $path): object
     {
-        $allfile = File::allFiles($path);
-        $this->filesName = $this->getFileName($allfile);
+        $allfiles = scandir($path);
+        $this->filesName = $this->getFileName($allfiles);
         return $this;
     }
 
@@ -182,8 +184,6 @@ class MenuHellper
     public function repeat()
     {
         $modules = $this->filesName;
-        dd($modules,'sss');
-
         foreach ($modules as $module) {
             $findModule = Module::where('name', $module)->first();
             if (!$findModule) {

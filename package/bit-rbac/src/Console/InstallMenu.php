@@ -46,13 +46,13 @@ class InstallMenu extends Command
         $menu = new MenuHellper();
         // dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
         // dd($menu->filterRoutes('middleware', 'rbac:view')->getRoutes());
-        dd($this->listFile());
+        // dd($this->listFile());
         // dd($this->listFolder());
         // dd($menu->filterRoutes('name', '/Test/Test/pembayaran|test modul')->getRoutes());
         // dd($menu->filterRoutes('name', 'admin')->getRoutes());
         // dd($menu->listsFolder());
-        // $menu->repeat();
-        $this->saveModule();
+        $menu->repeat();
+        // $this->saveModule();
 
     }
 
