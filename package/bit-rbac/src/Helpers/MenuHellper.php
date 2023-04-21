@@ -162,16 +162,17 @@ class MenuHellper
         return $this;
     }
 
+    // kalo ada pathnya ntar di tambahin di depan
     public function formatRoute(object $module): object
     {
         $formatRoute = [];
-        $routes = $this->filterRoutes('name', 'admin')->getRoutes();
+        $routes = $this->filterRoutes('name', $module->name)->getRoutes();
         // url, module_id, allow_permission
         foreach ($routes as $route) {
             array_push($formatRoute, [
                 'url' => $route['uri'],
                 'module_id'=>$module->id,
-                'allow_permission'=>config('permisssion.'.$route['type']),
+                'allow_permission'=>config('permission.'.$route['type']),
             ]);
         }
         dd($formatRoute);
