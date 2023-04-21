@@ -42,25 +42,25 @@ class InstallMenu extends Command
      */
     public function handle(): void
     {
+        $this->saveModule();
         // ============================
-        $menu = new MenuHellper();
-        // dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
-        // dd($menu->filterRoutes('middleware', 'rbac:view')->getRoutes());
-        // dd($this->listFile());
-        // dd($this->listFolder());
-        // dd($menu->filterRoutes('name', '/Test/Test/pembayaran|test modul')->getRoutes());
-        // dd($menu->filterRoutes('name', 'admin')->getRoutes());
-        // dd($menu->listsFolder());
-        $menu->repeat();
-        // $this->saveModule();
+        // $menu = new MenuHellper();
+        // // dd($menu->filterRoutes('name', 'admin')->filterRoutes('middleware', 'rbac:view')->getRoutes());
+        // // dd($menu->filterRoutes('middleware', 'rbac:view')->getRoutes());
+        // // dd($this->listFile());
+        // // dd($this->listFolder());
+        // // dd($menu->filterRoutes('name', '/Test/Test/pembayaran|test modul')->getRoutes());
+        // // dd($menu->filterRoutes('module', 'admin')->getRoutes());
+        // // dd($menu->listsFolder());
+        // $menu->repeat();
 
     }
 
     public function saveModule(): void
     {
         try {
-            $module = Module::upsert(config('module'), ['name'], ['name', 'allow_permission', 'author', 'edited', 'folder']);
-        } catch (QueryException $error) {
+            $module = Module::upsert(config('module'), ['name'], ['allow_permission', 'author', 'edited', 'folder']);
+        } catch (\Exception $error) {
             dd($error);
         }
     }

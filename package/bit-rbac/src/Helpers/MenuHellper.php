@@ -113,10 +113,7 @@ class MenuHellper
     {
         if (strpos($name, '|') !== false) {
             return explode('|', $name)[1];
-        } else {
-            $name = '';
         }
-
         return $name;
     }
 
@@ -157,7 +154,7 @@ class MenuHellper
     public function saveRoute(array $route): object
     {
         try {
-            Route::upsert($route, ['url'], ['url']);
+            Routes::upsert($route, ['url'], ['url']);
         } catch (QueryException $error) {
             dd($error);
         }
@@ -165,9 +162,21 @@ class MenuHellper
         return $this;
     }
 
-    public function formatRoute(string $moduleName): object
+    public function formatRoute(object $module): object
     {
-        dd($moduleName);
+        $formatRoute = [];
+        $routes = $this->filterRoutes('name', 'admin')->getRoutes();
+        // url, module_id, allow_permission
+        foreach ($routes as $route) {
+            array_push($formatRoute, [
+                'url' => $route['uri'],
+                'module_id'=>$module->id,
+                'allow_permission'=>config('permisssion.'.$route['type']),
+            ]);
+        }
+        dd($formatRoute);
+
+         $this->routeSave = $formatRoute;
         return $this;
     }
 
@@ -189,7 +198,7 @@ class MenuHellper
             if (!$findModule) {
                 continue;
             }
-            $this->formatRoute($module);
+            $this->formatRoute($findModule);
         }
 
         // foreach

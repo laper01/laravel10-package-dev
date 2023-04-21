@@ -18,6 +18,6 @@ Route::name('admin')->group(function () {
     Route::post('/test-app', function () {
         return 'ini test';
     })->middleware('rbac:add')
-        ->name(':view')
+        ->name(':add')
     ;
 });

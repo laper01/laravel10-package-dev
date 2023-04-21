@@ -19,7 +19,7 @@ class CreateModulesTable extends Migration
             $table->unsignedInteger('allow_permission');
             $table->string('author', 60);
             $table->string('edited', 60);
-            $table->string('folder', 60)->unique();
+            $table->string('folder', 60);
             $table->timestamps();
         });
     }

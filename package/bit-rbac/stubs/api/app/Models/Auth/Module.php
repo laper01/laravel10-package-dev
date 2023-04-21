@@ -13,11 +13,22 @@ class Module extends Model
     protected $guarded = [
         'id'
     ];
-    public function role(){
+
+    protected $fillable = [
+        "name",
+        'allow_permission',
+        'author',
+        'edited',
+        'folder'
+    ];
+
+    public function role()
+    {
         return $this->hasMany(Role::class);
     }
 
-    public function scopeWithRowNumber($query, $column = 'id', $order = 'asc'){
+    public function scopeWithRowNumber($query, $column = 'id', $order = 'asc')
+    {
         $sub = static::selectRaw("*, row_number() OVER (order by $column $order) as row_number")
             ->toSql();
         $query->from(DB::raw("({$sub}) as sub"));

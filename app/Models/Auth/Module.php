@@ -15,18 +15,20 @@ class Module extends Model
     ];
 
     protected $fillable = [
-        'name',
+        "name",
         'allow_permission',
         'author',
         'edited',
         'folder'
     ];
 
-    public function role(){
+    public function role()
+    {
         return $this->hasMany(Role::class);
     }
 
-    public function scopeWithRowNumber($query, $column = 'id', $order = 'asc'){
+    public function scopeWithRowNumber($query, $column = 'id', $order = 'asc')
+    {
         $sub = static::selectRaw("*, row_number() OVER (order by $column $order) as row_number")
             ->toSql();
         $query->from(DB::raw("({$sub}) as sub"));
