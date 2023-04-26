@@ -241,8 +241,8 @@ class MenuHellper
                 if ($ln_arr_path === 2) {
                     // cari parent menu pabila tidak ada buat
                     $parent_group_path = $array_path[$ln_arr_path - 1];
-                    $parent_group = $this->formatMenuNames->firstWhere('path', $parent_group_path);
-                    if ($parent_group == null) {
+                    $parent_group = $this->formatMenuNames->firstWhere('path', '/' . $parent_group_path);
+                    if ($parent_group === null) {
                         $this->formatMenuNames->push([
                             'id' => $this->menu_id,
                             'position' => $position,
@@ -275,12 +275,31 @@ class MenuHellper
                     $parent_group_path = $array_path[$ln_arr_path - 2];
                     $parent_group = $this->formatMenuNames->firstWhere('path', $parent_group_path);
                     $child_group = $this->formatMenuNames->firstWhere('path', $child_group_path);
+                    // if ($parent_group === null) {
+                    //     throw new \Exception('parent group id pada menu null' .$parent_group_path);
+                    // }
+                    // if ($child_group === null) {
+                    //     $this->formatMenuNames->push([
+                    //         'id' => $this->menu_id,
+                    //         'position' => $position,
+                    //         'name' => $parent_group_path,
+                    //         'parent_menu_id' => $parent_menu_id,
+                    //         'modul_id' => $modul_id,
+                    //         'url' => $url,
+                    //         'path' => $menu['path']
+                    //     ]);
+                    //     $this->parent_position = $this->menu_id;
+                    //     ++$this->menu_id;
+                    // }
                     if ($prePath === $menu['path']) {
                         ++$child_position;
                         $position = $child_position;
+                        $parent_menu_id = $this->parent_position;
                     } else {
-                        $child_position = 0;
+                        ++$child_position;
                         $position = $child_position;
+                        $parent_menu_id = $this->parent_position;
+                        $child_position = 0;
                     }
                 } else {
                     ++$this->parent_position;
