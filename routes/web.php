@@ -21,5 +21,4 @@ Route::get('/', function () {
 require __DIR__ . '/auth.php';
 // test routes
 require __DIR__ . '/admin.php';
-require __DIR__ . '/Test/test modul.php';
-require __DIR__ . '/Test/Test pembayaran/test modul.php';
+require __DIR__ . '/test modul.php';

@@ -24,6 +24,10 @@ class MenuHellper
     protected array $menusSave;
     protected array $routeSave;
     protected array $foldersName;
+    protected int $parent_position = 0;
+    protected int $menu_id = 1;
+
+    protected Collection $formatMenuNames;
 
     protected ?object $module;
 
@@ -36,6 +40,7 @@ class MenuHellper
                 'name' => $this->getName($route->getName() ?? ''),
                 'type' => $this->getType($route->getName() ?? ''),
                 'module' => $this->getModuleName($this->getName($route->getName() ?? '')),
+                'path' => $this->getModulePath($this->getName($route->getName() ?? '')),
                 // module name
                 // view add update delete
                 'menuName' => $this->getMenuName($route->getName() ?? ''),
@@ -48,6 +53,7 @@ class MenuHellper
         });
 
         $this->listFile(base_path('/routes'));
+        $this->formatMenuNames = collect();
 
     }
 
@@ -83,11 +89,22 @@ class MenuHellper
         return $this;
     }
 
+
     public function listFile(string $path): object
     {
         $allfiles = scandir($path);
         $this->filesName = $this->getFileName($allfiles);
         return $this;
+    }
+
+    public function getModulePath(string $name): string
+    {
+        if (strpos($name, '|') !== false) {
+            return explode('|', $name)[0];
+        } else {
+            $name = '';
+        }
+        return $name;
     }
 
     public function getName(string $name = ''): string
@@ -136,6 +153,15 @@ class MenuHellper
         return $this;
     }
 
+    public function varFilterRoute(Collection $route, string $filterKey, string $filterValue): Collection
+    {
+        $data = $route->filter(function (array $value, string $key) use ($filterKey, $filterValue) {
+            return $value[$filterKey] == $filterValue;
+        });
+
+        return $data;
+    }
+
     public function getRoutes(): Collection
     {
         return $this->filteredRoutes;
@@ -166,18 +192,17 @@ class MenuHellper
     public function formatRoute(object $module): object
     {
         $formatRoute = [];
-        $routes = $this->filterRoutes('name', $module->name)->getRoutes();
+        $routes = $this->filterRoutes('module', $module->name)->getRoutes();
         // url, module_id, allow_permission
         foreach ($routes as $route) {
             array_push($formatRoute, [
                 'url' => $route['uri'],
-                'module_id'=>$module->id,
-                'allow_permission'=>config('permission.'.$route['type']),
+                'module_id' => $module->id,
+                'allow_permission' => config('permission.' . $route['type']),
             ]);
         }
-        dd($formatRoute);
 
-         $this->routeSave = $formatRoute;
+        $this->routeSave = $formatRoute;
         return $this;
     }
 
@@ -191,6 +216,95 @@ class MenuHellper
 
     }
 
+    public function menuWithParent()
+    {
+
+    }
+    // yang belum save menu group
+    public function formatMenu(object $module)
+    {
+        $menus = $this->varFilterRoute($this->filteredRoutes, 'type', 'view-menu')->sortBy('path');
+        // dd($menus);
+        $child_position = 0;
+        $prePath = '';
+        foreach ($menus as $index => $menu) {
+            $position = $this->parent_position;
+            $name = $menu['menuName'];
+            $parent_menu_id = null;
+            $modul_id = $module->id;
+            $url = $menu['uri'];
+            $array_path = explode('/', $menu['path']);
+            $ln_arr_path = count($array_path);
+            // check if menu contain parent
+            // properti data menu yang perlu didisi: id, depth, position, name, type, parent_menu_id, modul_id, url
+            if (strpos($menu['path'], '/') !== false) {
+                if ($ln_arr_path === 2) {
+                    // cari parent menu pabila tidak ada buat
+                    $parent_group_path = $array_path[$ln_arr_path - 1];
+                    $parent_group = $this->formatMenuNames->firstWhere('path', $parent_group_path);
+                    if ($parent_group == null) {
+                        $this->formatMenuNames->push([
+                            'id' => $this->menu_id,
+                            'position' => $position,
+                            'name' => $parent_group_path,
+                            'parent_menu_id' => $parent_menu_id,
+                            'modul_id' => $modul_id,
+                            'url' => $url,
+                            'path' => $menu['path']
+                        ]);
+                        $this->parent_position = $this->menu_id;
+                        ++$this->menu_id;
+                    }
+                    // cek jika menu path sama dengan sebelumnya jika ya postion+1 jika tidak mulai dari awal
+                    if ($prePath === $menu['path']) {
+                        ++$child_position;
+                        $position = $child_position;
+                        $parent_menu_id = $this->parent_position;
+                    } else {
+                        ++$child_position;
+                        $position = $child_position;
+                        $parent_menu_id = $this->parent_position;
+                        $child_position = 0;
+                    }
+                } else if ($ln_arr_path > 2) {
+                    // dengan ada system ini berarti tidak boleh melakukan penulisan lebih dari satu path route sekaligus secara langsung tanpa menulis path pertama sendiri diawal
+                    // kenapa ini dilakukan unutk menghidari loop berlebih pada system
+                    // use firstWhere to find path in collection
+                    // dd($ln_arr_path);
+                    $child_group_path = $array_path[$ln_arr_path - 1];
+                    $parent_group_path = $array_path[$ln_arr_path - 2];
+                    $parent_group = $this->formatMenuNames->firstWhere('path', $parent_group_path);
+                    $child_group = $this->formatMenuNames->firstWhere('path', $child_group_path);
+                    if ($prePath === $menu['path']) {
+                        ++$child_position;
+                        $position = $child_position;
+                    } else {
+                        $child_position = 0;
+                        $position = $child_position;
+                    }
+                } else {
+                    ++$this->parent_position;
+                }
+            }
+            // detemine child or not
+            $this->formatMenuNames->push([
+                'id' => $this->menu_id,
+                'position' => $position,
+                'name' => $name,
+                'parent_menu_id' => $parent_menu_id,
+                'modul_id' => $modul_id,
+                'url' => $url,
+                'path' => $menu['path']
+            ]);
+            $prePath = $menu['path'];
+            ++$this->menu_id;
+        }
+
+        dd($this->formatMenuNames);
+        // dd($menus);
+
+    }
+
     public function repeat()
     {
         $modules = $this->filesName;
@@ -199,7 +313,7 @@ class MenuHellper
             if (!$findModule) {
                 continue;
             }
-            $this->formatRoute($findModule);
+            $this->formatRoute($findModule)->formatMenu($findModule);
         }
 
         // foreach

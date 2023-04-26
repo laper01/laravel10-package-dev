@@ -15,11 +15,9 @@ class CreateMenusTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->integer("depth")->nullable();
             $table->integer("position")->require();
             $table->string("icon_class",30)->nullable();
-            $table->enum('type',["MODULE","GROUP"])->nullable();
-            $table->string("name",30)->require();
+            $table->string("name",30)->require()->unique();
             $table->string("original_name",30)->nullable();
             $table->integer('parent_menu_id')->nullable();
             $table->boolean('is_active')->require();

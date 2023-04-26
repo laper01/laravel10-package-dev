@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
+            $table->string('url')->unique();
             $table->unsignedInteger('module_id')->nullable();
             $table->unsignedInteger('allow_permision');
             $table->timestamps();
