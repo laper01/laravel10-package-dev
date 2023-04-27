@@ -220,6 +220,7 @@ class MenuHellper
     {
 
     }
+    // positiion masih belum bener
     // yang belum save menu group
     public function formatMenu(object $module)
     {
@@ -227,6 +228,7 @@ class MenuHellper
         // dd($menus);
         $child_position = 0;
         $prePath = '';
+        $debug = '';
         foreach ($menus as $index => $menu) {
             $position = $this->parent_position;
             $name = $menu['menuName'];
@@ -245,7 +247,7 @@ class MenuHellper
                     if ($parent_group === null) {
                         $this->formatMenuNames->push([
                             'id' => $this->menu_id,
-                            'position' => $position,
+                            'position' => ++$position,
                             'name' => $parent_group_path,
                             'parent_menu_id' => $parent_menu_id,
                             'modul_id' => $modul_id,
@@ -253,19 +255,23 @@ class MenuHellper
                             'path' => $menu['path']
                         ]);
                         $parent_menu_id = $this->menu_id;
+                        $prePath = $menu['path'];
+                        ++$this->parent_position;
                         ++$this->menu_id;
+                        $child_position = 0;
                     }
-                    if($parent_group){
+                    if ($parent_group) {
                         $parent_menu_id = $parent_group['id'];
                     }
                     // cek jika menu path sama dengan sebelumnya jika ya postion+1 jika tidak mulai dari awal
                     if ($prePath === $menu['path']) {
                         ++$child_position;
                         $position = $child_position;
+                        $debug = 'path';
                     } else {
                         ++$child_position;
                         $position = $child_position;
-                        $child_position = 0;
+                        $debug = $prePath;
                     }
                 } else if ($ln_arr_path > 2) {
                     // dengan ada system ini berarti tidak boleh melakukan penulisan lebih dari satu path route sekaligus secara langsung tanpa menulis path pertama sendiri diawal
@@ -295,13 +301,13 @@ class MenuHellper
                     if ($prePath === $menu['path']) {
                         ++$child_position;
                         $position = $child_position;
-                        $parent_menu_id = $this->parent_position;
                     } else {
                         ++$child_position;
                         $position = $child_position;
-                        $parent_menu_id = $this->parent_position;
                         $child_position = 0;
                     }
+                } else {
+                    ++$this->parent_position;
                 }
             }
             // detemine child or not
@@ -312,11 +318,12 @@ class MenuHellper
                 'parent_menu_id' => $parent_menu_id,
                 'modul_id' => $modul_id,
                 'url' => $url,
-                'path' => $menu['path']
+                'path' => $menu['path'],
+                'debug' => $debug
             ]);
             $prePath = $menu['path'];
             ++$this->menu_id;
-            ++$this->parent_position;
+
         }
 
         dd($this->formatMenuNames);
