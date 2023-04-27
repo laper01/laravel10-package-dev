@@ -251,8 +251,9 @@ class MenuHellper
                             'name' => $parent_group_path,
                             'parent_menu_id' => $parent_menu_id,
                             'modul_id' => $modul_id,
-                            'url' => $url,
-                            'path' => $menu['path']
+                            'url' => '#',
+                            'path' => $menu['path'],
+                            'debug' => '1'
                         ]);
                         $parent_menu_id = $this->menu_id;
                         $prePath = $menu['path'];
@@ -267,11 +268,9 @@ class MenuHellper
                     if ($prePath === $menu['path']) {
                         ++$child_position;
                         $position = $child_position;
-                        $debug = 'path';
                     } else {
                         ++$child_position;
                         $position = $child_position;
-                        $debug = $prePath;
                     }
                 } else if ($ln_arr_path > 2) {
                     // dengan ada system ini berarti tidak boleh melakukan penulisan lebih dari satu path route sekaligus secara langsung tanpa menulis path pertama sendiri diawal
@@ -281,23 +280,29 @@ class MenuHellper
                     $child_group_path = $array_path[$ln_arr_path - 1];
                     $parent_group_path = $array_path[$ln_arr_path - 2];
                     $parent_group = $this->formatMenuNames->firstWhere('path', '/' . $parent_group_path);
-                    $child_group = $this->formatMenuNames->firstWhere('path', '/' . $child_group_path);
+                    $child_group = $this->formatMenuNames->firstWhere('path', '/' . $parent_group_path . '/' . $child_group_path);
                     if ($parent_group === null) {
                         throw new \Exception('parent group id pada menu null' . $parent_group_path);
                     }
-                    // if ($child_group === null) {
-                    //     $this->formatMenuNames->push([
-                    //         'id' => $this->menu_id,
-                    //         'position' => $position,
-                    //         'name' => $parent_group_path,
-                    //         'parent_menu_id' => $parent_menu_id,
-                    //         'modul_id' => $modul_id,
-                    //         'url' => $url,
-                    //         'path' => $menu['path']
-                    //     ]);
-                    //     $this->parent_position = $this->menu_id;
-                    //     ++$this->menu_id;
-                    // }
+                    if ($child_group === null) {
+                        $this->formatMenuNames->push([
+                            'id' => $this->menu_id,
+                            'position' => ++$position,
+                            'name' => $child_group_path,
+                            'parent_menu_id' => $parent_group['id'],
+                            'modul_id' => $modul_id,
+                            'url' => '#',
+                            'path' => $menu['path'],
+                        ]);
+                        $parent_menu_id = $this->menu_id;
+                        $prePath = $menu['path'];
+                        ++$this->parent_position;
+                        ++$this->menu_id;
+                        $child_position = 0;
+                    }
+                    if ($child_group) {
+                        $parent_menu_id = $child_group['id'];
+                    }
                     if ($prePath === $menu['path']) {
                         ++$child_position;
                         $position = $child_position;
@@ -319,7 +324,7 @@ class MenuHellper
                 'modul_id' => $modul_id,
                 'url' => $url,
                 'path' => $menu['path'],
-                'debug' => $debug
+                'debug' => $prePath
             ]);
             $prePath = $menu['path'];
             ++$this->menu_id;
