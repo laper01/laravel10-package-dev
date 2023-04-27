@@ -34,19 +34,19 @@ Route::name('/admin menu|admin')->prefix('/adminmenu')->group(function () {
 Route::name('/admin menu2|admin')->prefix('/adminmenu2')->group(function () {
     Route::get('1', function () {
         // Route assigned name "admin.users"...
-    })->name(':view-menu:test menu admin1');
-    Route::get('2', function () {
-        // Route assigned name "admin.users"...
-    })->name(':view-menu:test menu admin1');
-});
-
-
-Route::name('/admin menu/child test|admin')->prefix('/adminmenu')->group(function () {
-    Route::get('3', function () {
-        // Route assigned name "admin.users"...
     })->name(':view-menu:test menu admin3');
-    Route::get('4', function () {
+    Route::get('2', function () {
         // Route assigned name "admin.users"...
     })->name(':view-menu:test menu admin4');
 });
+
+
+// Route::name('/admin menu/child test|admin')->prefix('/adminmenu')->group(function () {
+//     Route::get('3', function () {
+//         // Route assigned name "admin.users"...
+//     })->name(':view-menu:test menu admin5');
+//     Route::get('4', function () {
+//         // Route assigned name "admin.users"...
+//     })->name(':view-menu:test menu admin6');
+// });
 

@@ -24,7 +24,7 @@ class MenuHellper
     protected array $menusSave;
     protected array $routeSave;
     protected array $foldersName;
-    protected int $parent_position = 0;
+    protected int $parent_position = 1;
     protected int $menu_id = 1;
 
     protected Collection $formatMenuNames;
@@ -252,18 +252,19 @@ class MenuHellper
                             'url' => $url,
                             'path' => $menu['path']
                         ]);
-                        $this->parent_position = $this->menu_id;
+                        $parent_menu_id = $this->menu_id;
                         ++$this->menu_id;
+                    }
+                    if($parent_group){
+                        $parent_menu_id = $parent_group['id'];
                     }
                     // cek jika menu path sama dengan sebelumnya jika ya postion+1 jika tidak mulai dari awal
                     if ($prePath === $menu['path']) {
                         ++$child_position;
                         $position = $child_position;
-                        $parent_menu_id = $this->parent_position;
                     } else {
                         ++$child_position;
                         $position = $child_position;
-                        $parent_menu_id = $this->parent_position;
                         $child_position = 0;
                     }
                 } else if ($ln_arr_path > 2) {
@@ -273,11 +274,11 @@ class MenuHellper
                     // dd($ln_arr_path);
                     $child_group_path = $array_path[$ln_arr_path - 1];
                     $parent_group_path = $array_path[$ln_arr_path - 2];
-                    $parent_group = $this->formatMenuNames->firstWhere('path', $parent_group_path);
-                    $child_group = $this->formatMenuNames->firstWhere('path', $child_group_path);
-                    // if ($parent_group === null) {
-                    //     throw new \Exception('parent group id pada menu null' .$parent_group_path);
-                    // }
+                    $parent_group = $this->formatMenuNames->firstWhere('path', '/' . $parent_group_path);
+                    $child_group = $this->formatMenuNames->firstWhere('path', '/' . $child_group_path);
+                    if ($parent_group === null) {
+                        throw new \Exception('parent group id pada menu null' . $parent_group_path);
+                    }
                     // if ($child_group === null) {
                     //     $this->formatMenuNames->push([
                     //         'id' => $this->menu_id,
@@ -301,8 +302,6 @@ class MenuHellper
                         $parent_menu_id = $this->parent_position;
                         $child_position = 0;
                     }
-                } else {
-                    ++$this->parent_position;
                 }
             }
             // detemine child or not
@@ -317,6 +316,7 @@ class MenuHellper
             ]);
             $prePath = $menu['path'];
             ++$this->menu_id;
+            ++$this->parent_position;
         }
 
         dd($this->formatMenuNames);
