@@ -220,15 +220,12 @@ class MenuHellper
     {
 
     }
-    // positiion masih belum bener
-    // yang belum save menu group
     public function formatMenu(object $module)
     {
         $menus = $this->varFilterRoute($this->filteredRoutes, 'type', 'view-menu')->sortBy('path');
         // dd($menus);
         $child_position = 0;
         $prePath = '';
-        $debug = '';
         foreach ($menus as $index => $menu) {
             $position = $this->parent_position;
             $name = $menu['menuName'];
@@ -253,7 +250,6 @@ class MenuHellper
                             'modul_id' => $modul_id,
                             'url' => '#',
                             'path' => $menu['path'],
-                            'debug' => '1'
                         ]);
                         $parent_menu_id = $this->menu_id;
                         $prePath = $menu['path'];
@@ -324,7 +320,6 @@ class MenuHellper
                 'modul_id' => $modul_id,
                 'url' => $url,
                 'path' => $menu['path'],
-                'debug' => $prePath
             ]);
             $prePath = $menu['path'];
             ++$this->menu_id;
@@ -338,6 +333,7 @@ class MenuHellper
 
     public function repeat()
     {
+        // tinggal buat save untuk masing masing route dan menu menggunakan upsert
         $modules = $this->filesName;
         foreach ($modules as $module) {
             $findModule = Module::where('name', $module)->first();
