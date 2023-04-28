@@ -52,8 +52,6 @@ class MenuHellper
         });
 
         $this->listFile(base_path('/routes'));
-        $this->formatMenuNames = collect();
-
     }
 
     public function getFileName(array $allFiles): array
@@ -229,7 +227,7 @@ class MenuHellper
     public function formatMenu(object $module): object
     {
         $menus = $this->varFilterRoute($this->filteredRoutes, 'type', 'view-menu')->sortBy('path');
-        // dd($menus);
+        $formatedMenus = collect();
         $child_position = 0;
         $prePath = '';
         foreach ($menus as $index => $menu) {
@@ -246,9 +244,9 @@ class MenuHellper
                 if ($ln_arr_path === 2) {
                     // cari parent menu pabila tidak ada buat
                     $parent_group_path = $array_path[$ln_arr_path - 1];
-                    $parent_group = $this->formatMenuNames->firstWhere('path', '/' . $parent_group_path);
+                    $parent_group = $formatedMenus->firstWhere('path', '/' . $parent_group_path);
                     if ($parent_group === null) {
-                        $this->formatMenuNames->push([
+                        $formatedMenus->push([
                             'id' => $this->menu_id,
                             'position' => ++$position,
                             'name' => $parent_group_path,
@@ -281,13 +279,13 @@ class MenuHellper
                     // dd($ln_arr_path);
                     $child_group_path = $array_path[$ln_arr_path - 1];
                     $parent_group_path = $array_path[$ln_arr_path - 2];
-                    $parent_group = $this->formatMenuNames->firstWhere('path', '/' . $parent_group_path);
-                    $child_group = $this->formatMenuNames->firstWhere('path', '/' . $parent_group_path . '/' . $child_group_path);
+                    $parent_group = $formatedMenus->firstWhere('path', '/' . $parent_group_path);
+                    $child_group = $formatedMenus->firstWhere('path', '/' . $parent_group_path . '/' . $child_group_path);
                     if ($parent_group === null) {
                         throw new \Exception('parent group id pada menu null' . $parent_group_path);
                     }
                     if ($child_group === null) {
-                        $this->formatMenuNames->push([
+                        $formatedMenus->push([
                             'id' => $this->menu_id,
                             'position' => ++$position,
                             'name' => $child_group_path,
@@ -318,7 +316,7 @@ class MenuHellper
                 }
             }
             // detemine child or not
-            $this->formatMenuNames->push([
+            $formatedMenus->push([
                 'id' => $this->menu_id,
                 'position' => $position,
                 'name' => $name,
@@ -332,6 +330,7 @@ class MenuHellper
 
         }
         // dd($menus);
+        $this->formatMenuNames = $formatedMenus;
         return $this;
     }
 
@@ -349,9 +348,9 @@ class MenuHellper
             if (!$findModule) {
                 continue;
             }
-            $testRoute = $this->formatRoute($findModule)->getFormatedRoutes();
-            // $test = $this->formatRoute($findModule)->formatMenu($findModule)->getFormatedMenus();
-            dd($testRoute);
+            // $testRoute = $this->formatRoute($findModule)->getFormatedRoutes();
+            $testMenus = $this->formatRoute($findModule)->formatMenu($findModule)->getFormatedMenus();
+            dd($testMenus);
         }
 
         // foreach
