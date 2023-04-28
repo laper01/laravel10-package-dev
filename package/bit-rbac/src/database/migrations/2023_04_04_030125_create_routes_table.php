@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('url')->unique();
             $table->unsignedInteger('module_id')->nullable();
-            $table->unsignedInteger('allow_permision');
+            $table->unsignedInteger('allow_permission');
             $table->timestamps();
         });
     }

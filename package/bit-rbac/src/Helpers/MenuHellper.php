@@ -26,7 +26,7 @@ class MenuHellper
     protected int $menu_id = 1;
 
     protected Collection $formatMenuNames;
-    protected Collection $routeSave;
+    protected array $routeSave;
 
     protected ?object $module;
 
@@ -174,10 +174,10 @@ class MenuHellper
         return $this;
     }
 
-    public function saveRoute(array $route): object
+    public function saveRoute(): object
     {
         try {
-            Routes::upsert($route, ['url'], ['url']);
+            Routes::upsert($this->routeSave, ['url'], ['module_id', 'allow_permission']);
         } catch (QueryException $error) {
             dd($error);
         }
@@ -199,31 +199,25 @@ class MenuHellper
             ]);
         }
 
-        $this->routeSave = $formatRoute;
+        $this->routeSave = $formatRoute->toArray();
         return $this;
     }
 
-    public function getFormatedRoutes(): Collection
+    public function getFormatedRoutes(): array
     {
         return $this->routeSave;
     }
 
-    public function saveMenu(array $menu)
+    public function saveMenu()
     {
         try {
-            Menu::upsert($menu, ['name'], ['name']);
+            // Menu::upsert($this->formatMenuNames, ['name'], ['name']);
         } catch (QueryException $error) {
             dd($error);
         }
 
     }
 
-
-
-    public function menuWithParent()
-    {
-
-    }
     public function formatMenu(object $module): object
     {
         $menus = $this->varFilterRoute($this->filteredRoutes, 'type', 'view-menu')->sortBy('path');
@@ -348,9 +342,9 @@ class MenuHellper
             if (!$findModule) {
                 continue;
             }
-            // $testRoute = $this->formatRoute($findModule)->getFormatedRoutes();
-            $testMenus = $this->formatRoute($findModule)->formatMenu($findModule)->getFormatedMenus();
-            dd($testMenus);
+            $testRoute = $this->formatRoute($findModule)->saveRoute();
+            // dd($testRoute);
+            // $testMenus = $this->formatRoute($findModule)->formatMenu($findModule)->getFormatedMenus();
         }
 
         // foreach

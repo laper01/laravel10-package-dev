@@ -7,23 +7,28 @@ Route::name('/Test|test modul')->prefix('test-modul')->group(function () {
     })->name(':view-menu:test menu modul');
     Route::get('/users1', function () {
         // Route assigned name "admin.users"...
-    });
+    })->middleware('rbac:view')
+        ->name(':view');
     Route::get('/test-app', function () {
         return 'ini test';
-    })->middleware('rbac:view');
+    })->middleware('rbac:view')
+        ->name(':view');
 
     Route::post('/test-app', function () {
         return 'ini test';
-    })->middleware('rbac:add');
+    })->middleware('rbac:add')
+        ->name(':add');
 });
 
 Route::name('/Test/Test pembayaran|test modul')->prefix('testpembayaran')->group(function () {
     Route::get('/users', function () {
         // Route assigned name "admin.users"...
-    });
+    })->middleware('rbac:view')
+        ->name(':view');
     Route::get('/users1', function () {
         // Route assigned name "admin.users"...
-    });
+    })->middleware('rbac:view')
+        ->name(':view');
     Route::get('/test-app', function () {
         return 'ini test';
     })->middleware('rbac:view')
@@ -32,5 +37,6 @@ Route::name('/Test/Test pembayaran|test modul')->prefix('testpembayaran')->group
 
     Route::post('/test-app', function () {
         return 'ini test';
-    })->middleware('rbac:add');
+    })->middleware('rbac:add')
+        ->name(':add');
 });
