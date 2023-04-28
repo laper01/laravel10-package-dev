@@ -25,7 +25,7 @@ class MenuHellper
     protected int $parent_position = 1;
     protected int $menu_id = 1;
 
-    protected Collection $formatMenuNames;
+    protected array $formatMenuNames;
     protected array $routeSave;
 
     protected ?object $module;
@@ -211,11 +211,11 @@ class MenuHellper
     public function saveMenu()
     {
         try {
-            // Menu::upsert($this->formatMenuNames, ['name'], ['name']);
+            Menu::upsert($this->formatMenuNames, ['id', 'name'], ['position', 'parent_menu_id', 'module_id', 'url']);
         } catch (QueryException $error) {
             dd($error);
         }
-
+        return $this;
     }
 
     public function formatMenu(object $module): object
@@ -245,7 +245,7 @@ class MenuHellper
                             'position' => ++$position,
                             'name' => $parent_group_path,
                             'parent_menu_id' => $parent_menu_id,
-                            'modul_id' => $modul_id,
+                            'module_id' => $modul_id,
                             'url' => '#',
                             'path' => $menu['path'],
                         ]);
@@ -284,7 +284,7 @@ class MenuHellper
                             'position' => ++$position,
                             'name' => $child_group_path,
                             'parent_menu_id' => $parent_group['id'],
-                            'modul_id' => $modul_id,
+                            'module_id' => $modul_id,
                             'url' => '#',
                             'path' => $menu['path'],
                         ]);
@@ -315,7 +315,7 @@ class MenuHellper
                 'position' => $position,
                 'name' => $name,
                 'parent_menu_id' => $parent_menu_id,
-                'modul_id' => $modul_id,
+                'module_id' => $modul_id,
                 'url' => $url,
                 'path' => $menu['path'],
             ]);
@@ -324,11 +324,16 @@ class MenuHellper
 
         }
         // dd($menus);
-        $this->formatMenuNames = $formatedMenus;
+
+        $removePath = $formatedMenus->map(function($item){
+            unset($item['path']);
+            return $item;
+        }) ;
+        $this->formatMenuNames = $removePath->toArray();
         return $this;
     }
 
-    public function getFormatedMenus(): Collection
+    public function getFormatedMenus(): array
     {
         return $this->formatMenuNames;
     }
@@ -342,7 +347,7 @@ class MenuHellper
             if (!$findModule) {
                 continue;
             }
-            $testRoute = $this->formatRoute($findModule)->saveRoute();
+            $testRoute = $this->formatRoute($findModule)->saveRoute()->formatMenu($findModule)->saveMenu();
             // dd($testRoute);
             // $testMenus = $this->formatRoute($findModule)->formatMenu($findModule)->getFormatedMenus();
         }

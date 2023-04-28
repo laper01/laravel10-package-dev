@@ -20,7 +20,7 @@ class CreateMenusTable extends Migration
             $table->string("name",30)->require()->unique();
             $table->string("original_name",30)->nullable();
             $table->integer('parent_menu_id')->nullable();
-            $table->boolean('is_active')->require();
+            $table->boolean('is_active')->default(true)->require();
             $table->integer('module_id')->nullable();
             $table->string('url')->nullable();
             $table->timestamps();

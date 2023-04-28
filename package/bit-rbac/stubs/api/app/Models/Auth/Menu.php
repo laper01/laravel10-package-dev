@@ -8,11 +8,11 @@ class Menu extends Model
 {
     protected $guarded = ['id'];
     protected $fillable = [
-        'depth',
+        'id',
         'position',
         'name',
         'parent_menu_id',
-        'modul_id',
-        'url'
+        'module_id',
+        'url',
     ];
 }
