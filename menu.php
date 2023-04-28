@@ -1,10 +1,9 @@
 <?php
-
-Illuminate\Support\Collection^ {#724 // package/bit-rbac/src/Helpers/MenuHellper.php:322
-    #items: array:9 [
+Illuminate\Support\Collection^ {#724 // package/bit-rbac/src/Helpers/MenuHellper.php:329
+    #items: array:10 [
       0 => array:7 [
         "id" => 1
-        "position" => 0
+        "position" => 1
         "name" => "test menu name navbar"
         "parent_menu_id" => null
         "modul_id" => 2
@@ -13,11 +12,11 @@ Illuminate\Support\Collection^ {#724 // package/bit-rbac/src/Helpers/MenuHellper
       ]
       1 => array:7 [
         "id" => 2
-        "position" => 0
+        "position" => 2
         "name" => "admin menu"
         "parent_menu_id" => null
         "modul_id" => 2
-        "url" => "adminmenu/1"
+        "url" => "#"
         "path" => "/admin menu"
       ]
       2 => array:7 [
@@ -31,7 +30,7 @@ Illuminate\Support\Collection^ {#724 // package/bit-rbac/src/Helpers/MenuHellper
       ]
       3 => array:7 [
         "id" => 4
-        "position" => 1
+        "position" => 2
         "name" => "test menu admin2"
         "parent_menu_id" => 2
         "modul_id" => 2
@@ -40,45 +39,54 @@ Illuminate\Support\Collection^ {#724 // package/bit-rbac/src/Helpers/MenuHellper
       ]
       4 => array:7 [
         "id" => 5
-        "position" => 2
-        "name" => "test menu admin5"
+        "position" => 3
+        "name" => "child test"
         "parent_menu_id" => 2
         "modul_id" => 2
-        "url" => "adminmenu/3"
+        "url" => "#"
         "path" => "/admin menu/child test"
       ]
       5 => array:7 [
         "id" => 6
         "position" => 1
-        "name" => "test menu admin6"
-        "parent_menu_id" => 2
+        "name" => "test menu admin5"
+        "parent_menu_id" => 5
         "modul_id" => 2
-        "url" => "adminmenu/4"
+        "url" => "adminmenu/3"
         "path" => "/admin menu/child test"
       ]
       6 => array:7 [
         "id" => 7
         "position" => 2
-        "name" => "admin menu2"
-        "parent_menu_id" => null
+        "name" => "test menu admin6"
+        "parent_menu_id" => 5
         "modul_id" => 2
-        "url" => "adminmenu2/1"
-        "path" => "/admin menu2"
+        "url" => "adminmenu/4"
+        "path" => "/admin menu/child test"
       ]
       7 => array:7 [
         "id" => 8
-        "position" => 2
-        "name" => "test menu admin3"
-        "parent_menu_id" => 7
+        "position" => 4
+        "name" => "admin menu2"
+        "parent_menu_id" => null
         "modul_id" => 2
-        "url" => "adminmenu2/1"
+        "url" => "#"
         "path" => "/admin menu2"
       ]
       8 => array:7 [
         "id" => 9
         "position" => 1
+        "name" => "test menu admin3"
+        "parent_menu_id" => 8
+        "modul_id" => 2
+        "url" => "adminmenu2/1"
+        "path" => "/admin menu2"
+      ]
+      9 => array:7 [
+        "id" => 10
+        "position" => 2
         "name" => "test menu admin4"
-        "parent_menu_id" => 7
+        "parent_menu_id" => 8
         "modul_id" => 2
         "url" => "adminmenu2/2"
         "path" => "/admin menu2"

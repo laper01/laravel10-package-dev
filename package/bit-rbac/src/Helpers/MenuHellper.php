@@ -21,13 +21,12 @@ class MenuHellper
 
     protected string $moduleName;
     protected array $filesName;
-    protected array $menusSave;
-    protected array $routeSave;
     protected array $foldersName;
     protected int $parent_position = 1;
     protected int $menu_id = 1;
 
     protected Collection $formatMenuNames;
+    protected Collection $routeSave;
 
     protected ?object $module;
 
@@ -191,11 +190,11 @@ class MenuHellper
     // kalo ada pathnya ntar di tambahin di depan
     public function formatRoute(object $module): object
     {
-        $formatRoute = [];
+        $formatRoute = collect();
         $routes = $this->filterRoutes('module', $module->name)->getRoutes();
-        // url, module_id, allow_permission
+
         foreach ($routes as $route) {
-            array_push($formatRoute, [
+            $formatRoute->push([
                 'url' => $route['uri'],
                 'module_id' => $module->id,
                 'allow_permission' => config('permission.' . $route['type']),
@@ -204,6 +203,11 @@ class MenuHellper
 
         $this->routeSave = $formatRoute;
         return $this;
+    }
+
+    public function getFormatedRoutes(): Collection
+    {
+        return $this->routeSave;
     }
 
     public function saveMenu(array $menu)
@@ -216,11 +220,13 @@ class MenuHellper
 
     }
 
+
+
     public function menuWithParent()
     {
 
     }
-    public function formatMenu(object $module)
+    public function formatMenu(object $module): object
     {
         $menus = $this->varFilterRoute($this->filteredRoutes, 'type', 'view-menu')->sortBy('path');
         // dd($menus);
@@ -325,10 +331,13 @@ class MenuHellper
             ++$this->menu_id;
 
         }
-
-        dd($this->formatMenuNames);
         // dd($menus);
+        return $this;
+    }
 
+    public function getFormatedMenus(): Collection
+    {
+        return $this->formatMenuNames;
     }
 
     public function repeat()
@@ -340,7 +349,9 @@ class MenuHellper
             if (!$findModule) {
                 continue;
             }
-            $this->formatRoute($findModule)->formatMenu($findModule);
+            $testRoute = $this->formatRoute($findModule)->getFormatedRoutes();
+            // $test = $this->formatRoute($findModule)->formatMenu($findModule)->getFormatedMenus();
+            dd($testRoute);
         }
 
         // foreach

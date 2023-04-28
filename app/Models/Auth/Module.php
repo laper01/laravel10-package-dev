@@ -15,7 +15,8 @@ class Module extends Model
     ];
 
     protected $fillable = [
-        "name",
+        'id',
+        'name',
         'allow_permission',
         'author',
         'edited',
